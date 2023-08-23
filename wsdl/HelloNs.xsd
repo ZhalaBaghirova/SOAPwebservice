@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.hello.org/HelloNs"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns:tns="http://www.hello.org/HelloNs"
+		xmlns:ns0="http://www.hello.org/HelloNs"
+		elementFormDefault="qualified">
+
+	<xs:element name="SayHello" nillable="true" type="ns0:SayHello"/>
+	<xs:complexType name="SayHello">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="SayHelloResponse" nillable="true" type="ns0:SayHelloResponse"/>
+	<xs:complexType name="SayHelloResponse">
+		<xs:sequence>
+			<xs:element name="SayHelloResult" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,150 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>soi</groupId>
+  <artifactId>hellows.service.wsdlfirst</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <properties>
+    <version.java>17</version.java>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <version.maven.compiler>3.10.1</version.maven.compiler>
+    <version.maven.war>3.3.2</version.maven.war>
+    <version.maven.exec>3.1.0</version.maven.exec>
+    <version.maven.jaxws>4.0.1</version.maven.jaxws>
+    <version.jaxws-rt>4.0.1</version.jaxws-rt>
+
+    <version.wildfly.maven.plugin>4.0.0.Final</version.wildfly.maven.plugin>
+    <version.wildfly.bom>27.0.1.Final</version.wildfly.bom>
+  </properties>
+
+    <repositories>
+        <repository>
+            <id>jboss-public-maven-repository</id>
+            <name>JBoss Public Maven Repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jboss-public-maven-repository</id>
+            <name>JBoss Public Maven Repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- importing the jakartaee-with-tools BOM adds specs and other useful artifacts as managed dependencies -->
+            <dependency>
+                <groupId>org.wildfly.bom</groupId>
+                <artifactId>wildfly-ee-with-tools</artifactId>
+                <version>${version.wildfly.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Import the CDI API, we use provided scope as the API is included
+        in JBoss EAP -->
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Import the Common Annotations API (JSR-250), we use provided
+        scope as the API is included in JBoss EAP -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Import the Servlet API, we use provided scope as the API is
+        included in JBoss EAP -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.jboss.spec.jakarta.xml.ws</groupId>
+            <artifactId>jboss-jakarta-xml-ws-api_4.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+	    <plugin>
+	        <groupId>com.sun.xml.ws</groupId>
+	        <artifactId>jaxws-maven-plugin</artifactId>
+	        <version>${version.maven.jaxws}</version>
+	        <configuration>
+	            <wsdlDirectory>${basedir}/src/main/webapp/WEB-INF/wsdl</wsdlDirectory>
+	            <sourceDestDir>${basedir}/target/generated-sources</sourceDestDir>
+	            <extension>true</extension>
+	        </configuration>
+	        <executions>
+	            <execution>
+	                <id>HelloWs</id>
+	                <goals>
+	                    <goal>wsimport</goal>
+	                </goals>
+	                <configuration>
+	                    <packageName>hellows.service.wsdlfirst</packageName>
+	                </configuration>
+	            </execution>
+	        </executions>
+	        <dependencies>
+				<dependency>
+				    <groupId>com.sun.xml.ws</groupId>
+				    <artifactId>jaxws-rt</artifactId>
+				    <version>${version.jaxws-rt}</version>
+				</dependency>
+			</dependencies>
+	    </plugin>
+	
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.maven.compiler}</version>
+        <configuration>
+          <release>${version.java}</release>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${version.maven.war}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+        <version>${version.wildfly.maven.plugin}</version>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
