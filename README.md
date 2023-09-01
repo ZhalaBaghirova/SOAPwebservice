@@ -45,4 +45,4 @@ o sells the seats of the lock or reservation with the given identifier
 o if the identifier is invalid, a CinemaException must be thrown
 
 _**The service  listens on the following URL:**_
-http://localhost:8080/WebService_NEPTUN/Cinema
+http://localhost:8080/WebService_IKLRQP/Cinema
